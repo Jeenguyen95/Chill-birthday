@@ -4,62 +4,234 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Sinh Nhật Chill 🎀</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --pink:#FFB3C6;--pink-hot:#F06292;--yellow:#FFE066;--mint:#B5EAD7;
-  --sky:#B8E4F9;--lavender:#D4B8F9;--peach:#FFCBA4;
-  --soft-bg:#FFF5F8;--white:#FFFDF9;
-  --text-dark:#4A3860;--text-mid:#7A6090;--text-light:#A090B8;
+/* ─────────────────────────────────────────
+   RESET & TOKENS
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pink:     #FFB3C6;
+  --pink-hot: #F06292;
+  --yellow:   #FFE066;
+  --mint:     #B5EAD7;
+  --sky:      #B8E4F9;
+  --peach:    #FFCBA4;
+  --soft-bg:  #FFF5F8;
+  --text-dark:#4A3860;
+  --text-mid: #7A6090;
+  --text-light:#A090B8;
 }
-html{scroll-behavior:smooth}
-body{background:var(--soft-bg);color:var(--text-dark);font-family:'Be Vietnam Pro',sans-serif;font-weight:400;overflow-x:hidden}
 
-/* ── CONFETTI ── */
-#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--soft-bg);
+  color: var(--text-dark);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
 
-/* ── BALLOONS ── */
-.balloons-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.balloon{position:absolute;animation:floatB ease-in-out infinite;opacity:.55}
-@keyframes floatB{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-18px) rotate(5deg)}}
+/* ── CONFETTI canvas (fixed, above everything) ── */
+#confetti-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 999;
+}
 
-/* ── WAVE ── */
-.wave{display:block;width:100%;overflow:hidden;line-height:0}
-.wave svg{display:block}
+/* ── WAVE dividers ── */
+.wave { display: block; width: 100%; overflow: hidden; line-height: 0; }
+.wave svg { display: block; }
 
 /* ── SHARED ── */
-section{padding:5rem 2rem}
-.section-tag{display:inline-block;background:var(--yellow);color:var(--text-dark);font-family:'Baloo 2',cursive;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;padding:.3rem 1rem;border-radius:50px;margin-bottom:1rem}
-.section-title{font-family:'Baloo 2',cursive;font-size:clamp(2rem,5vw,3rem);text-align:center;margin-bottom:3rem;line-height:1.2;color:var(--text-dark)}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+section { padding: 5rem 2rem; }
+.section-tag {
+  display: inline-block;
+  background: var(--yellow); color: var(--text-dark);
+  font-family: 'Baloo 2', cursive;
+  font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
+  padding: .3rem 1rem; border-radius: 50px; margin-bottom: 1rem;
+}
+.section-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(2rem,5vw,3rem);
+  text-align: center; margin-bottom: 3rem;
+  line-height: 1.2; color: var(--text-dark);
+}
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ── HERO ── */
-.hero{min-height:100vh;background:linear-gradient(160deg,#FFE8F0 0%,#FFF0C2 40%,#C8EEFF 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 2rem 6rem;position:relative;overflow:hidden}
-.big-one{font-family:'Baloo 2',cursive;font-size:clamp(11rem,28vw,20rem);line-height:1;color:transparent;-webkit-text-stroke:4px #FFB3C6;position:absolute;top:50%;left:50%;transform:translate(-50%,-53%);user-select:none;pointer-events:none;animation:pulse1 3s ease-in-out infinite}
-@keyframes pulse1{0%,100%{transform:translate(-50%,-53%) scale(1)}50%{transform:translate(-50%,-53%) scale(1.03)}}
-.hero-stars{font-size:1.5rem;margin-bottom:.8rem;opacity:0;animation:fadeUp .8s .2s forwards;letter-spacing:.3em}
-.hero-eyebrow{font-family:'Baloo 2',cursive;font-size:clamp(.85rem,2vw,1rem);letter-spacing:.15em;color:var(--text-mid);margin-bottom:.8rem;text-transform:uppercase;opacity:0;animation:fadeUp .8s .35s forwards;position:relative}
-.hero-title{font-family:'Baloo 2',cursive;font-size:clamp(2.6rem,8vw,6rem);line-height:1.15;color:var(--text-dark);position:relative;opacity:0;animation:fadeUp .8s .55s forwards}
-.hero-title .pink{color:#F06292}.hero-title .blue{color:#4FC3F7}.hero-title .yell{color:#F9A825}
-.hero-fullname{font-size:clamp(.85rem,2vw,1.05rem);font-weight:600;color:var(--text-mid);letter-spacing:.08em;margin-top:.5rem;opacity:0;animation:fadeUp .8s .7s forwards;position:relative}
-.hero-sub{font-size:clamp(.95rem,2.2vw,1.15rem);color:var(--text-mid);margin-top:1rem;max-width:420px;line-height:1.6;opacity:0;animation:fadeUp .8s .85s forwards;position:relative}
-.hero-date-badge{margin-top:2rem;display:inline-flex;align-items:center;gap:.6rem;background:white;border-radius:50px;padding:.7rem 1.8rem;font-family:'Baloo 2',cursive;font-size:clamp(1rem,2.5vw,1.25rem);color:var(--text-dark);box-shadow:0 4px 20px rgba(240,98,146,.15);opacity:0;animation:fadeUp .8s 1s forwards;position:relative}
-.scroll-hint{position:absolute;bottom:5.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--text-light);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;opacity:0;animation:fadeIn 1s 1.8s forwards}
-.scroll-bounce{animation:bounceD 1.5s 2s infinite;font-size:1.1rem}
-@keyframes bounceD{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+/* ─────────────────────────────────────────
+   HERO
+   Layout: 3 lines centered — "Chill tròn" / BIG NUMBER / "tuổi rồi"
+   Background: soft warm gradient, no decorative clutter
+───────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #FFE8F0 0%, #FFF9E6 50%, #E8F4FF 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
 
-/* ── INFO (details + venue) ── */
-.info-section{background:white}
-.info-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
-.details-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
-.detail-card{border-radius:28px;padding:2.2rem 1.6rem 2rem;text-align:center;border:3px solid transparent;transition:transform .3s,box-shadow .3s}
+/* subtle background texture circles */
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero::before {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,179,198,.18) 0%, transparent 70%);
+  top: -150px; right: -150px;
+}
+.hero::after {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(184,228,249,.2) 0%, transparent 70%);
+  bottom: -100px; left: -100px;
+}
+
+/* Line 1 & 3: supporting text */
+.hero-line {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 600;
+  color: var(--text-mid);
+  letter-spacing: .04em;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+.hero-line-1 {
+  opacity: 0;
+  /* animated in by JS after number animation */
+}
+
+/* Line 3 "tuổi rồi" — hidden initially, fades in at the end */
+.hero-line-3 {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .9s cubic-bezier(.25,.46,.45,.94),
+              transform .9s cubic-bezier(.25,.46,.45,.94);
+}
+.hero-line-3.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* THE BIG NUMBER */
+.hero-number-wrap {
+  position: relative;
+  z-index: 1;
+  /* Fixed height so surrounding lines don't jump when digit count changes */
+  height: clamp(160px, 38vw, 320px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fixed width wide enough for "365" — prevents layout shift */
+  width: clamp(260px, 55vw, 500px);
+  margin: .5rem 0;
+}
+
+.hero-number {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(130px, 32vw, 280px);
+  font-weight: 800;
+  line-height: 1;
+  /* gradient fill */
+  background: linear-gradient(145deg, #F9A8C9 0%, #F06292 40%, #FFCBA4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* subtle soft shadow for depth */
+  filter: drop-shadow(0 4px 24px rgba(240,98,146,.25));
+  /* JS controls opacity & filter during animation */
+  will-change: opacity, filter, transform;
+  /* monospace-like fixed width so digit changes don't jitter */
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+/* Soft glow behind the number */
+.hero-number-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,98,146,.12) 0%, transparent 70%);
+  pointer-events: none;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: .6; transform: scale(1); }
+  50%       { opacity: 1;  transform: scale(1.08); }
+}
+
+/* date badge below the 3 lines */
+.hero-date-badge {
+  margin-top: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: white;
+  border-radius: 50px;
+  padding: .7rem 1.8rem;
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(.9rem, 2.2vw, 1.1rem);
+  color: var(--text-dark);
+  box-shadow: 0 4px 20px rgba(240,98,146,.12);
+  position: relative; z-index: 1;
+  opacity: 0;
+  /* fades in after the full number animation completes */
+  transition: opacity .8s ease;
+}
+.hero-date-badge.visible { opacity: 1; }
+
+/* fullname sub-label */
+.hero-fullname {
+  margin-top: .8rem;
+  font-size: clamp(.8rem,1.8vw,.95rem);
+  color: var(--text-light);
+  letter-spacing: .1em;
+  position: relative; z-index: 1;
+  opacity: 0;
+  transition: opacity .8s ease .2s;
+}
+.hero-fullname.visible { opacity: 1; }
+
+/* scroll cue */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  color: var(--text-light); font-size: .68rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  opacity: 0; transition: opacity .8s ease .4s;
+  z-index: 1;
+}
+.scroll-hint.visible { opacity: 1; }
+.scroll-arrow { animation: bounceD 1.8s ease-in-out infinite; font-size: 1rem; }
+@keyframes bounceD { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+/* ─────────────────────────────────────────
+   INFO SECTION (details + venue — unchanged)
+───────────────────────────────────────── */
+.info-section { background: white; }
+.info-wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
+.details-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+.detail-card { border-radius: 28px; padding: 2.2rem 1.6rem 2rem; text-align: center; border: 3px solid transparent; transition: transform .3s, box-shadow .3s; }
 .detail-card:nth-child(1){background:linear-gradient(145deg,#FFF0F5,#FFE0EC);border-color:#F48FB1;box-shadow:0 6px 28px rgba(244,143,177,.18)}
 .detail-card:nth-child(2){background:linear-gradient(145deg,#FFFBE8,#FFF3C0);border-color:#FFD740;box-shadow:0 6px 28px rgba(255,215,64,.2)}
 .detail-card:nth-child(3){background:linear-gradient(145deg,#F0FFF8,#DDFFF0);border-color:#69F0AE;box-shadow:0 6px 28px rgba(105,240,174,.18)}
-.detail-card:hover{transform:translateY(-7px) rotate(-1deg);box-shadow:0 16px 40px rgba(200,100,150,.18)}
-.detail-icon-wrap{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1rem}
+.detail-card:hover { transform: translateY(-7px) rotate(-1deg); box-shadow: 0 16px 40px rgba(200,100,150,.18); }
+.detail-icon-wrap { width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1rem; }
 .detail-card:nth-child(1) .detail-icon-wrap{background:rgba(244,143,177,.2)}
 .detail-card:nth-child(2) .detail-icon-wrap{background:rgba(255,215,64,.25)}
 .detail-card:nth-child(3) .detail-icon-wrap{background:rgba(105,240,174,.2)}
@@ -82,264 +254,288 @@ section{padding:5rem 2rem}
   .venue-text{text-align:center}
 }
 
-/* ══════════════════════════════════════════════════
-   GALLERY — HORIZONTAL SCROLL
-   A native-scroll row of tall cards.
-   Videos auto-play (muted) when ≥60% in view,
-   pause when they leave. Click any card → lightbox.
-══════════════════════════════════════════════════ */
-.gallery-section{
-  background: linear-gradient(160deg,#1A0A2E 0%,#2D1454 60%,#1A0A2E 100%);
-  padding: 4rem 0 5rem;
-  overflow: hidden;
+/* ─────────────────────────────────────────
+   MASONRY GALLERY
+───────────────────────────────────────── */
+.gallery-section {
+  background: #FAFAFA;
+  padding: 5rem 2rem 6rem;
 }
-.gallery-header{
-  padding: 0 2.5rem 2.5rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.gallery-header-left .section-tag{ background: var(--pink); color: #1A0A2E; }
-.gallery-title{
-  font-family:'Baloo 2',cursive;
-  font-size: clamp(1.8rem,5vw,3rem);
-  color: white;
-  line-height: 1.15;
-  margin-top:.4rem;
-}
-.gallery-hint{
-  font-size:.78rem;
-  color:rgba(255,255,255,.38);
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  text-align:right;
-  flex-shrink:0;
-}
+.gallery-section .section-tag { background: var(--pink); color: #4A3860; }
 
-/* scroll container */
-.gallery-track{
-  display: flex;
-  align-items: center;          /* vertically center cards of diff heights */
-  gap: 1.5rem;
-  padding-bottom: 1.5rem;
-  overflow-x: auto;
-  overflow-y: visible;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  cursor: grab;
+/* masonry container — CSS multi-column approach */
+.masonry-grid {
+  column-count: 3;
+  column-gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
 }
-.gallery-track:active{ cursor: grabbing; }
-.gallery-track::-webkit-scrollbar{ display: none; }
+@media (max-width: 860px) { .masonry-grid { column-count: 2; } }
+@media (max-width: 520px) { .masonry-grid { column-count: 1; } }
 
-/* ── individual card ── */
-.g-card{
-  flex: 0 0 auto;
-  width: 300px;
-  border-radius: 20px;
+/* ── individual masonry item ── */
+.m-item {
+  break-inside: avoid;       /* prevent column break inside a card */
+  margin-bottom: 1rem;
+  border-radius: 16px;
   overflow: hidden;
-  background: rgba(255,255,255,.06);
-  border: 1.5px solid rgba(255,255,255,.08);
-  scroll-snap-align: center;
+  position: relative;
   cursor: pointer;
-  position: relative;
-  opacity: 0.32;
-  transform: scale(0.88);
-  filter: blur(1.5px);
-  transition: opacity .55s cubic-bezier(.25,.46,.45,.94),
-              transform .55s cubic-bezier(.25,.46,.45,.94),
-              filter .55s cubic-bezier(.25,.46,.45,.94),
-              border-color .55s,
-              box-shadow .55s;
-  will-change: transform, opacity, filter;
+  background: white;
+  box-shadow: 0 2px 12px rgba(74,56,96,.08);
+  /* fade-in on scroll — starts hidden, JS adds .visible */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity .55s cubic-bezier(.25,.46,.45,.94),
+    transform .55s cubic-bezier(.25,.46,.45,.94),
+    box-shadow .3s ease,
+    outline .2s ease;
+  will-change: opacity, transform;
 }
-
-/* taller card for videos */
-.g-card.video-card{ width: 340px; }
-
-/* ACTIVE / in-view: full spotlight */
-.g-card.in-view{
+.m-item.visible {
   opacity: 1;
-  transform: scale(1);
-  filter: blur(0);
-  border-color: rgba(255,179,198,.5);
-  box-shadow: 0 0 0 1px rgba(255,179,198,.3),
-              0 20px 60px rgba(240,98,146,.35),
-              0 0 80px rgba(240,98,146,.12);
-  z-index: 2;
+  transform: translateY(0);
 }
 
-/* media area */
-.g-media{
-  width: 100%;
-  aspect-ratio: 3/4;
-  position: relative;
-  overflow: hidden;
-  background: #2D1454;
-  border-radius: 18px;
+/* hover: scale + deeper shadow (desktop only) */
+@media (hover: hover) {
+  .m-item:hover {
+    box-shadow: 0 10px 32px rgba(74,56,96,.16);
+    outline: 2px solid rgba(240,98,146,.3);
+  }
+  .m-item:hover .m-media { transform: scale(1.03); }
+  .m-item:hover .m-overlay { opacity: 1; }
 }
-.g-card.video-card .g-media{ aspect-ratio: 9/14; }
 
-.g-media img,
-.g-media video{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* ── media wrapper ── */
+.m-media {
   display: block;
-  transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+  width: 100%;
+  transition: transform .5s cubic-bezier(.25,.46,.45,.94);
 }
-.g-card.in-view .g-media img,
-.g-card.in-view .g-media video{ transform: scale(1.05); }
+.m-media img,
+.m-media video {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* natural height — masonry magic */
+}
 
-/* placeholder */
-.g-placeholder{
-  position: absolute;
-  inset: 0;
+/* placeholder gradient (shown when no real media) */
+.m-placeholder {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: .8rem;
+  gap: .6rem;
   font-family: 'Baloo 2', cursive;
+  color: rgba(255,255,255,.7);
+  padding: 2.5rem 1rem;
 }
-.gp1{background:linear-gradient(160deg,#FFDDE8,#FFB3C6)}
-.gp2{background:linear-gradient(160deg,#2D1454,#5C2D8A)}
-.gp3{background:linear-gradient(160deg,#FFFACC,#FFE066)}
-.gp4{background:linear-gradient(160deg,#1A2E1A,#2D5C2D)}
-.gp5{background:linear-gradient(160deg,#EDD8FF,#C9A0FF)}
-.gp6{background:linear-gradient(160deg,#2E1A0A,#5C3A1A)}
+.mph-icon { font-size: 2.5rem; opacity: .7; }
+.mph-lbl  { font-size: .78rem; font-weight: 600; text-align: center; line-height: 1.5; }
+.mph-file { font-size: .65rem; opacity: .5; font-style: italic; }
 
-.g-ph-icon{ font-size:3rem; opacity:.65; }
-.g-ph-lbl{ font-size:.78rem; font-weight:600; text-align:center; padding:0 .8rem; line-height:1.5; opacity:.6; color:white; }
-.g-ph-file{ font-size:.65rem; opacity:.4; color:white; font-style:italic; }
+/* placeholder color variants */
+.mp-a { background: linear-gradient(160deg, #FFDDE8, #F8A0BE); min-height: 240px; }
+.mp-b { background: linear-gradient(160deg, #2D1454, #5C2D8A); min-height: 200px; }
+.mp-c { background: linear-gradient(160deg, #FFF3C0, #FFD740); min-height: 280px; }
+.mp-d { background: linear-gradient(160deg, #1A2E1A, #3A7A3A); min-height: 210px; }
+.mp-e { background: linear-gradient(160deg, #EDD8FF, #BA68C8); min-height: 260px; }
+.mp-f { background: linear-gradient(160deg, #FFE0CC, #FF8A65); min-height: 200px; }
+.mp-g { background: linear-gradient(160deg, #D8F0FF, #4FC3F7); min-height: 290px; }
 
-/* video play ring — pulsing while playing */
-.g-play-ring{
+/* hover overlay with title */
+.m-overlay {
   position: absolute;
-  top: 12px; left: 12px;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: rgba(240,98,146,.85);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .75rem;
-  color: white;
-  font-family: 'Baloo 2', cursive;
-  letter-spacing: .04em;
-  z-index: 3;
-  transition: opacity .3s;
-}
-.g-play-ring.playing::before{
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid rgba(240,98,146,.6);
-  animation: ringPulse 1.6s ease-out infinite;
-}
-@keyframes ringPulse{
-  0%{ transform:scale(1); opacity:.8; }
-  100%{ transform:scale(1.9); opacity:0; }
-}
-
-/* bottom meta row */
-.g-meta{
-  padding: 1rem 1.2rem 1.1rem;
+  inset: 0;
+  background: linear-gradient(to top, rgba(74,56,96,.75) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity .35s ease;
   display: flex;
-  flex-direction: column;
-  gap: .25rem;
-  background: rgba(20,8,36,.8);
+  align-items: flex-end;
+  padding: 1rem;
+  pointer-events: none;
 }
-.g-timestamp{
+.m-overlay-title {
   font-family: 'Baloo 2', cursive;
-  font-size: .65rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: rgba(255,179,198,.65);
-}
-.g-title{
-  font-family: 'Baloo 2', cursive;
-  font-size: 1rem;
+  font-size: .9rem;
   font-weight: 700;
   color: white;
   line-height: 1.3;
 }
 
-/* progress strip */
-.gallery-progress{
-  margin: 0 2.5rem;
-  height: 2px;
-  background: rgba(255,255,255,.1);
-  border-radius: 2px;
-  overflow: hidden;
+/* video badge pill */
+.m-video-badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(240,98,146,.9);
+  color: white;
+  font-family: 'Baloo 2', cursive;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  padding: .2rem .7rem;
+  border-radius: 50px;
+  display: flex; align-items: center; gap: .3rem;
+  z-index: 2;
+  backdrop-filter: blur(4px);
 }
-.gallery-progress-fill{
-  height: 100%;
-  background: linear-gradient(to right,var(--pink),var(--pink-hot));
-  border-radius: 2px;
-  width: 0%;
-  transition: width .15s linear;
+/* pulse ring when video is playing */
+.m-video-badge.playing::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50px;
+  border: 2px solid rgba(240,98,146,.5);
+  animation: badgePulse 1.8s ease-out infinite;
+}
+@keyframes badgePulse {
+  0%   { transform: scale(1);   opacity: .8; }
+  100% { transform: scale(1.5); opacity: 0;  }
+}
+
+/* meta row (timestamp + title) at the bottom */
+.m-meta {
+  padding: .75rem 1rem .85rem;
+  background: white;
+}
+.m-timestamp {
+  font-family: 'Baloo 2', cursive;
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: .2rem;
+}
+.m-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.3;
 }
 
 /* ── LIGHTBOX ── */
-.lightbox{position:fixed;inset:0;background:rgba(10,4,20,.94);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .3s}
-.lightbox.open{opacity:1;pointer-events:auto}
-.lightbox-inner{position:relative;max-width:900px;width:100%;max-height:92vh;display:flex;align-items:center;justify-content:center}
-.lightbox-inner img,.lightbox-inner video{max-width:100%;max-height:88vh;border-radius:16px;box-shadow:0 20px 70px rgba(0,0,0,.6);display:block}
-.lb-close{position:absolute;top:-18px;right:-18px;width:40px;height:40px;background:var(--pink-hot);border:none;border-radius:50%;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(240,98,146,.5);transition:transform .2s}
-.lb-close:hover{transform:scale(1.15) rotate(90deg)}
-.lb-caption{position:absolute;bottom:-48px;left:0;right:0;text-align:center;font-family:'Baloo 2',cursive;font-size:1rem;color:rgba(255,255,255,.7)}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);border-radius:50%;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;backdrop-filter:blur(6px)}
-.lb-nav:hover{background:rgba(255,255,255,.25)}
-.lb-nav.prev{left:-62px}.lb-nav.next{right:-62px}
-@media(max-width:640px){.lb-nav{display:none}}
+.lightbox {
+  position: fixed; inset: 0;
+  background: rgba(20, 8, 36, .94);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lb-inner {
+  position: relative;
+  max-width: 900px; width: 100%;
+  max-height: 92vh;
+  display: flex; align-items: center; justify-content: center;
+}
+.lb-inner img,
+.lb-inner video {
+  max-width: 100%; max-height: 88vh;
+  border-radius: 14px;
+  box-shadow: 0 20px 70px rgba(0,0,0,.6);
+  display: block;
+}
+.lb-close {
+  position: absolute; top: -18px; right: -18px;
+  width: 40px; height: 40px;
+  background: var(--pink-hot); border: none; border-radius: 50%;
+  color: white; font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(240,98,146,.5);
+  transition: transform .2s;
+}
+.lb-close:hover { transform: scale(1.15) rotate(90deg); }
+.lb-caption {
+  position: absolute; bottom: -46px; left: 0; right: 0;
+  text-align: center;
+  font-family: 'Baloo 2', cursive;
+  font-size: 1rem;
+  color: rgba(255,255,255,.7);
+}
+.lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 46px; height: 46px;
+  background: rgba(255,255,255,.12);
+  border: 2px solid rgba(255,255,255,.25);
+  border-radius: 50%; color: white; font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s; backdrop-filter: blur(6px);
+}
+.lb-nav:hover { background: rgba(255,255,255,.25); }
+.lb-nav.prev { left: -62px; }
+.lb-nav.next { right: -62px; }
+@media (max-width: 640px) { .lb-nav { display: none; } }
 
 /* ── FOOTER ── */
-footer{padding:4rem 2rem;text-align:center;background:linear-gradient(160deg,#FFF0F8 0%,#EAF8FF 100%);border-top:3px dashed rgba(240,98,146,.2)}
-.footer-cake{font-size:3.5rem;margin-bottom:.8rem;animation:wiggle 2s infinite;display:block}
-@keyframes wiggle{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
-.footer-text{font-family:'Baloo 2',cursive;font-size:1rem;color:var(--text-mid)}
-
-/* ── KEYFRAMES ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-@media(max-width:500px){
-  .g-card{width:75vw}
-  .g-card.video-card{width:82vw}
-  .gallery-hint{display:none}
+footer {
+  padding: 4rem 2rem; text-align: center;
+  background: linear-gradient(160deg, #FFF0F8 0%, #EAF8FF 100%);
+  border-top: 3px dashed rgba(240,98,146,.2);
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.footer-cake { font-size: 3.5rem; margin-bottom: .8rem; animation: wiggle 2s infinite; display: block; }
+@keyframes wiggle { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
+.footer-text { font-family: 'Baloo 2', cursive; font-size: 1rem; color: var(--text-mid); }
+
+/* ── KEYFRAMES shared ── */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 </style>
 </head>
 <body>
 
+<!-- fixed confetti canvas -->
 <canvas id="confetti-canvas"></canvas>
 
-<!-- ══ HERO ══ -->
-<section class="hero">
-  <div class="balloons-bg" aria-hidden="true">
-    <svg class="balloon" style="left:6%;top:10%;animation-duration:4.2s;animation-delay:0s" width="55" height="80" viewBox="0 0 55 80"><ellipse cx="27.5" cy="30" rx="22" ry="27" fill="#FFB3C6"/><line x1="27.5" y1="57" x2="27.5" y2="80" stroke="#FFB3C6" stroke-width="1.5"/></svg>
-    <svg class="balloon" style="left:88%;top:8%;animation-duration:3.8s;animation-delay:0.7s" width="50" height="74" viewBox="0 0 50 74"><ellipse cx="25" cy="28" rx="20" ry="25" fill="#B8E4F9"/><line x1="25" y1="53" x2="25" y2="74" stroke="#B8E4F9" stroke-width="1.5"/></svg>
-    <svg class="balloon" style="left:15%;top:65%;animation-duration:5s;animation-delay:1.2s" width="46" height="68" viewBox="0 0 46 68"><ellipse cx="23" cy="26" rx="18" ry="22" fill="#FFE066"/><line x1="23" y1="48" x2="23" y2="68" stroke="#FFE066" stroke-width="1.5"/></svg>
-    <svg class="balloon" style="left:80%;top:60%;animation-duration:4.5s;animation-delay:0.3s" width="52" height="76" viewBox="0 0 52 76"><ellipse cx="26" cy="29" rx="21" ry="26" fill="#B5EAD7"/><line x1="26" y1="55" x2="26" y2="76" stroke="#B5EAD7" stroke-width="1.5"/></svg>
-    <svg class="balloon" style="left:50%;top:5%;animation-duration:3.5s;animation-delay:1.8s" width="44" height="65" viewBox="0 0 44 65"><ellipse cx="22" cy="25" rx="17" ry="21" fill="#D4B8F9"/><line x1="22" y1="46" x2="22" y2="65" stroke="#D4B8F9" stroke-width="1.5"/></svg>
-    <svg class="balloon" style="left:38%;top:75%;animation-duration:4.8s;animation-delay:0.9s" width="48" height="70" viewBox="0 0 48 70"><ellipse cx="24" cy="27" rx="19" ry="23" fill="#FFCBA4"/><line x1="24" y1="50" x2="24" y2="70" stroke="#FFCBA4" stroke-width="1.5"/></svg>
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+
+  <!-- Line 1: "Chill tròn" — fades in on page load, before animation -->
+  <p class="hero-line hero-line-1" id="heroLine1">Chill tròn</p>
+
+  <!-- The BIG number — JS animates 1 → 365 → 1 -->
+  <div class="hero-number-wrap">
+    <div class="hero-number-glow"></div>
+    <span class="hero-number" id="heroNumber">1</span>
   </div>
-  <div class="big-one" aria-hidden="true">1</div>
-  <p class="hero-stars" aria-hidden="true">🌟 ⭐ 🌟</p>
-  <p class="hero-eyebrow">Bạn được mời đến</p>
-  <h1 class="hero-title"><span class="pink">Chill</span> tròn <span class="yell">1</span><br><span class="blue">tuổi rồi!</span></h1>
-  <p class="hero-fullname">Nguyễn Đặng Khánh Di · 07 / 07</p>
-  <p class="hero-sub">Bé Chill của chúng mình đã tròn 1 tuổi! Hãy đến chung vui nhé 🎀</p>
-  <div class="hero-date-badge">🎂 Chủ Nhật · 05 / 07 / 2026</div>
-  <div class="scroll-hint"><span>Xem chi tiết</span><span class="scroll-bounce">🐣</span></div>
+
+  <!-- Line 3: "tuổi rồi" — hidden initially, revealed at end of animation -->
+  <p class="hero-line hero-line-3" id="heroLine3">tuổi rồi</p>
+
+  <!-- Date badge — appears after animation -->
+  <div class="hero-date-badge" id="heroBadge">
+    🎂 Chủ Nhật · 05 / 07 / 2026
+  </div>
+
+  <!-- Sub fullname -->
+  <p class="hero-fullname" id="heroFullname">Nguyễn Đặng Khánh Di · 07 / 07</p>
+
+  <!-- Scroll cue -->
+  <div class="scroll-hint" id="scrollHint">
+    <span>Xem chi tiết</span>
+    <span class="scroll-arrow">🐣</span>
+  </div>
+
 </section>
 
-<div class="wave"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="white"/></svg></div>
+<div class="wave"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="white"/>
+</svg></div>
 
-<!-- ══ INFO ══ -->
+<!-- ═══════════════════════════════════════════════════════
+     INFO — Time · Dresscode · Clown + Venue
+═══════════════════════════════════════════════════════ -->
 <section class="info-section" id="details">
   <div style="text-align:center">
     <span class="section-tag reveal">✨ Thông Tin Tiệc</span>
@@ -350,7 +546,7 @@ footer{padding:4rem 2rem;text-align:center;background:linear-gradient(160deg,#FF
       <div class="detail-card reveal">
         <div class="detail-icon-wrap">🕑</div>
         <p class="detail-label">Thời Gian</p>
-        <p class="detail-value">18:30</p>
+        <p class="detail-value">11:00 SA – 1:00 CH</p>
         <p class="detail-note">Chủ Nhật, 05 / 07 / 2026<br>Đừng đến trễ nha!</p>
       </div>
       <div class="detail-card reveal">
@@ -378,185 +574,163 @@ footer{padding:4rem 2rem;text-align:center;background:linear-gradient(160deg,#FF
   </div>
 </section>
 
-<div class="wave" style="background:white"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#1A0A2E"/></svg></div>
+<div class="wave" style="background:white"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,20 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#FAFAFA"/>
+</svg></div>
 
-<!-- ══════════════════════════════════════════════
-     GALLERY — HORIZONTAL SCROLL
-     ─────────────────────────────────────────────
-     HOW TO ADD PHOTOS / VIDEOS:
+<!-- ═══════════════════════════════════════════════════════
+     MASONRY GALLERY
+     ─────────────────────────────────────────────────────
+     HOW TO ADD MEDIA:
+       IMAGE: Delete <div class="m-placeholder mp-X"> block,
+              uncomment <img src="…"> line below it.
 
-     IMAGE CARD:
-       1. Delete the <div class="g-placeholder …"> block
-       2. Uncomment the <img src="…"> line below it
-       3. Update data-timestamp and data-title
-
-     VIDEO CARD:
-       1. Delete the <div class="g-placeholder …"> block
-       2. Uncomment the <video …> block below it
-       3. Video auto-plays (muted) when scrolled into view
-══════════════════════════════════════════════ -->
+       VIDEO: Delete <div class="m-placeholder mp-X"> block,
+              uncomment <video …> block below it.
+              IntersectionObserver handles autoplay/pause.
+═══════════════════════════════════════════════════════ -->
 <section class="gallery-section" id="gallery">
-  <div class="gallery-header reveal">
-    <div class="gallery-header-left">
-      <span class="section-tag">📸 Kỷ Niệm</span>
-      <h2 class="gallery-title">Một Năm<br>Yêu Thương ⭐</h2>
-    </div>
-    <p class="gallery-hint">← Kéo để xem thêm →</p>
+  <div style="text-align:center">
+    <span class="section-tag reveal">📸 Kỷ Niệm</span>
+    <h2 class="section-title reveal">Một Năm Yêu Thương ⭐</h2>
   </div>
 
-  <div class="gallery-track" id="galleryTrack">
+  <div class="masonry-grid" id="masonryGrid">
 
-    <!-- ── CARD 1 · ẢNH ── -->
-    <div class="g-card reveal"
-         data-type="image"
-         data-timestamp="Tháng 07, 2025"
-         data-title="Lần đầu chào đời 👶">
-      <div class="g-media">
-        <div class="g-placeholder gp1">
-          <span class="g-ph-icon">📷</span>
-          <span class="g-ph-lbl">Thêm ảnh vào đây</span>
-          <span class="g-ph-file">anh1.jpg</span>
+    <!-- ── ITEM 1 · IMAGE ── -->
+    <div class="m-item" data-type="image" data-timestamp="Tháng 07, 2025" data-title="Lần đầu chào đời 👶">
+      <div class="m-media">
+        <div class="m-placeholder mp-a">
+          <span class="mph-icon">📷</span>
+          <span class="mph-lbl">Thêm ảnh vào đây</span>
+          <span class="mph-file">anh1.jpg</span>
         </div>
-        <!-- Xoá placeholder trên, bỏ comment dòng dưới khi có ảnh thật: -->
-        <!-- <img src="anh1.jpg" alt="Lần đầu chào đời"> -->
+        <!-- <img src="anh1.jpg" alt="Lần đầu chào đời" loading="lazy"> -->
       </div>
-      <div class="g-meta">
-        <span class="g-timestamp">Tháng 07, 2025</span>
-        <span class="g-title">Lần đầu chào đời 👶</span>
-      </div>
-    </div>
-
-	<div class="g-card reveal"
-         data-type="image"
-         data-timestamp="18 Tháng 07, 2025"
-         data-title="Đi chụp Studio 📸">
-      <div class="g-media">
-         <img src="Studio.JPG" alt="Lần đầu chào đời">      
-	  </div>
-      <div class="g-meta">
-        <span class="g-timestamp">18 Tháng 07, 2025</span>
-        <span class="g-title">Đi chụp Studio 📸</span>
+      <div class="m-overlay"><p class="m-overlay-title">Lần đầu chào đời 👶</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 07, 2025</p>
+        <p class="m-title">Lần đầu chào đời 👶</p>
       </div>
     </div>
 
-    <!-- ── CARD 2 · VIDEO ── -->
-    <div class="g-card video-card reveal"
-         data-type="video"
-         data-timestamp="01 Tháng 08, 2025"
-         data-title="Tự tay giữ ti 👶">
-      <div class="g-media">
-        <video muted playsinline loop preload="metadata">
-               <source src="HoldingChewy.mov" type="video/mp4">
-             </video>
-        <div class="g-play-ring" aria-label="Video">▶</div>
-      </div>
-      <div class="g-meta">
-        <span class="g-timestamp">01 Tháng 08, 2025</span>
-        <span class="g-title">Tự tay giữ ti 👶</span>
-      </div>
-    </div>
-
-    <!-- ── CARD 3 · ẢNH ── -->
-    <div class="g-card reveal"
-         data-type="image"
-         data-timestamp="06 Tháng 08, 2025"
-         data-title="Bắt đầu đú đởn 😉">
-      <div class="g-media">
-        <video muted playsinline loop preload="metadata">
-               <source src="SMiling.MOV" type="video/mp4">
-             </video>
-        <div class="g-play-ring" aria-label="Video">▶</div>
-      </div>
-      <div class="g-meta">
-        <span class="g-timestamp">06 Tháng 08, 2025</span>
-        <span class="g-title">Bắt đầu đú đởn 😉</span>
-      </div>
-    </div>
-
-    <!-- ── CARD 4 · VIDEO ── -->
-    <div class="g-card video-card reveal"
-         data-type="video"
-         data-timestamp="22 Tháng 8, 2025"
-         data-title="Nghe bố kể chuyện 📖">
-      <div class="g-media">
-        <video muted playsinline loop preload="metadata">
-               <source src="Listening to Daddy.mp4" type="video/mp4">
-             </video>
-        <div class="g-play-ring" aria-label="Video">▶</div>
-      </div>
-      <div class="g-meta">
-        <span class="g-timestamp">22 Tháng 8, 2025</span>
-        <span class="g-title">Nghe bố kể chuyện 📖</span>
-      </div>
-    </div>
-
-    <!-- ── CARD 5 · ẢNH ── -->
-    <div class="g-card reveal"
-         data-type="image"
-         data-timestamp="18 Tháng 09, 2025"
-         data-title="Cạo đầu và cười đùa 🔊">
-      <div class="g-media">
-        <video muted playsinline loop preload="metadata">
-               <source src="laughing.MOV" type="video/mp4">
+    <!-- ── ITEM 2 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 08, 2025" data-title="Nụ cười đầu tiên 😊">
+      <div class="m-media">
+        <div class="m-placeholder mp-b">
+          <span class="mph-icon">🎬</span>
+          <span class="mph-lbl">Thêm video vào đây</span>
+          <span class="mph-file">video1.mp4</span>
+        </div>
+        <!-- <video muted playsinline preload="none" loop>
+               <source src="video1.mp4" type="video/mp4">
              </video> -->
       </div>
-      <div class="g-meta">
-        <span class="g-timestamp">18 Tháng 09, 2025</span>
-        <span class="g-title">Cạo đầu và cười đùa 🔊</span>
+      <div class="m-video-badge">▶ VIDEO</div>
+      <div class="m-overlay"><p class="m-overlay-title">Nụ cười đầu tiên 😊</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 08, 2025</p>
+        <p class="m-title">Nụ cười đầu tiên 😊</p>
       </div>
     </div>
 
-    <!-- ── CARD 6 · VIDEO ── -->
-    <div class="g-card video-card reveal"
-         data-type="video"
-         data-timestamp="Tháng 05, 2026"
-         data-title="Cười thôi là cười 😂">
-      <div class="g-media">
-        <div class="g-placeholder gp6">
-          <span class="g-ph-icon">🎬</span>
-          <span class="g-ph-lbl">Thêm video vào đây</span>
-          <span class="g-ph-file">video3.mp4</span>
+    <!-- ── ITEM 3 · IMAGE ── -->
+    <div class="m-item" data-type="image" data-timestamp="Tháng 09, 2025" data-title="Luôn luôn rạng rỡ ☀️">
+      <div class="m-media">
+        <div class="m-placeholder mp-c">
+          <span class="mph-icon">📷</span>
+          <span class="mph-lbl">Thêm ảnh vào đây</span>
+          <span class="mph-file">anh2.jpg</span>
         </div>
-        <!-- <video muted playsinline loop preload="metadata">
+        <!-- <img src="anh2.jpg" alt="Luôn luôn rạng rỡ" loading="lazy"> -->
+      </div>
+      <div class="m-overlay"><p class="m-overlay-title">Luôn luôn rạng rỡ ☀️</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 09, 2025</p>
+        <p class="m-title">Luôn luôn rạng rỡ ☀️</p>
+      </div>
+    </div>
+
+    <!-- ── ITEM 4 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 11, 2025" data-title="Tập bò rồi nè 🐣">
+      <div class="m-media">
+        <div class="m-placeholder mp-d">
+          <span class="mph-icon">🎬</span>
+          <span class="mph-lbl">Thêm video vào đây</span>
+          <span class="mph-file">video2.mp4</span>
+        </div>
+        <!-- <video muted playsinline preload="none" loop>
+               <source src="video2.mp4" type="video/mp4">
+             </video> -->
+      </div>
+      <div class="m-video-badge">▶ VIDEO</div>
+      <div class="m-overlay"><p class="m-overlay-title">Tập bò rồi nè 🐣</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 11, 2025</p>
+        <p class="m-title">Tập bò rồi nè 🐣</p>
+      </div>
+    </div>
+
+    <!-- ── ITEM 5 · IMAGE ── -->
+    <div class="m-item" data-type="image" data-timestamp="Tháng 02, 2026" data-title="Những bước chân đầu tiên 🐾">
+      <div class="m-media">
+        <div class="m-placeholder mp-e">
+          <span class="mph-icon">📷</span>
+          <span class="mph-lbl">Thêm ảnh vào đây</span>
+          <span class="mph-file">anh3.jpg</span>
+        </div>
+        <!-- <img src="anh3.jpg" alt="Những bước chân đầu tiên" loading="lazy"> -->
+      </div>
+      <div class="m-overlay"><p class="m-overlay-title">Những bước chân đầu tiên 🐾</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 02, 2026</p>
+        <p class="m-title">Những bước chân đầu tiên 🐾</p>
+      </div>
+    </div>
+
+    <!-- ── ITEM 6 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 04, 2026" data-title="Cười thôi là cười 😂">
+      <div class="m-media">
+        <div class="m-placeholder mp-f">
+          <span class="mph-icon">🎬</span>
+          <span class="mph-lbl">Thêm video vào đây</span>
+          <span class="mph-file">video3.mp4</span>
+        </div>
+        <!-- <video muted playsinline preload="none" loop>
                <source src="video3.mp4" type="video/mp4">
              </video> -->
-        <div class="g-play-ring" aria-label="Video">▶</div>
       </div>
-      <div class="g-meta">
-        <span class="g-timestamp">Tháng 05, 2026</span>
-        <span class="g-title">Cười thôi là cười 😂</span>
+      <div class="m-video-badge">▶ VIDEO</div>
+      <div class="m-overlay"><p class="m-overlay-title">Cười thôi là cười 😂</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 04, 2026</p>
+        <p class="m-title">Cười thôi là cười 😂</p>
       </div>
     </div>
 
-    <!-- ── CARD 7 · ẢNH ── -->
-    <div class="g-card reveal"
-         data-type="image"
-         data-timestamp="Tháng 06, 2026"
-         data-title="Một năm tròn hạnh phúc 🎀">
-      <div class="g-media">
-        <div class="g-placeholder gp1">
-          <span class="g-ph-icon">📷</span>
-          <span class="g-ph-lbl">Thêm ảnh vào đây</span>
-          <span class="g-ph-file">anh4.jpg</span>
+    <!-- ── ITEM 7 · IMAGE ── -->
+    <div class="m-item" data-type="image" data-timestamp="Tháng 06, 2026" data-title="Một năm tròn hạnh phúc 🎀">
+      <div class="m-media">
+        <div class="m-placeholder mp-g">
+          <span class="mph-icon">📷</span>
+          <span class="mph-lbl">Thêm ảnh vào đây</span>
+          <span class="mph-file">anh4.jpg</span>
         </div>
-        <!-- <img src="anh4.jpg" alt="Một năm tròn hạnh phúc"> -->
+        <!-- <img src="anh4.jpg" alt="Một năm tròn hạnh phúc" loading="lazy"> -->
       </div>
-      <div class="g-meta">
-        <span class="g-timestamp">Tháng 06, 2026</span>
-        <span class="g-title">Một năm tròn hạnh phúc 🎀</span>
+      <div class="m-overlay"><p class="m-overlay-title">Một năm tròn hạnh phúc 🎀</p></div>
+      <div class="m-meta">
+        <p class="m-timestamp">Tháng 06, 2026</p>
+        <p class="m-title">Một năm tròn hạnh phúc 🎀</p>
       </div>
     </div>
 
-  </div><!-- end gallery-track -->
-
-  <div class="gallery-progress">
-    <div class="gallery-progress-fill" id="galleryFill"></div>
-  </div>
+  </div><!-- end .masonry-grid -->
 </section>
 
 <!-- ── LIGHTBOX ── -->
 <div class="lightbox" id="lightbox">
-  <div class="lightbox-inner" id="lbInner">
+  <div class="lb-inner" id="lbInner">
     <button class="lb-close" id="lbClose" aria-label="Đóng">✕</button>
     <button class="lb-nav prev" id="lbPrev">◀</button>
     <button class="lb-nav next" id="lbNext">▶</button>
@@ -564,252 +738,298 @@ footer{padding:4rem 2rem;text-align:center;background:linear-gradient(160deg,#FF
   </div>
 </div>
 
-<div class="wave" style="background:#1A0A2E"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C480,0 960,60 1440,20 L1440,60 L0,60 Z" fill="#FFF0F8"/></svg></div>
+<div class="wave" style="background:#FAFAFA"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,40 C480,0 960,60 1440,20 L1440,60 L0,60 Z" fill="#FFF0F8"/>
+</svg></div>
 
-<!-- ══ FOOTER ══ -->
+<!-- ── FOOTER ── -->
 <footer>
   <span class="footer-cake">🎂</span>
-  <p class="footer-text">Sinh nhật Chill 🎀 · 07/07 · Được làm với tình yêu của Bố Khang &amp; Mẹ Ánh 💕</p>
+  <p class="footer-text">Sinh nhật Chill 🎀 · 07/07 · Được làm với tình yêu của Ba &amp; Mẹ 💕</p>
 </footer>
 
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════ -->
 <script>
-/* ── CONFETTI ── */
-(function(){
-  const cv=document.getElementById('confetti-canvas'),cx=cv.getContext('2d');
-  cv.width=innerWidth;cv.height=innerHeight;
-  const colors=['#FFB3C6','#B8E4F9','#FFE066','#B5EAD7','#D4B8F9','#FFCBA4','#FF8FAB'];
-  const shapes=['circle','rect','star'];
-  const ps=Array.from({length:160},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,s:Math.random()*10+5,sh:shapes[Math.floor(Math.random()*3)],c:colors[Math.floor(Math.random()*colors.length)],r:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.1,vx:(Math.random()-.5)*1.5,vy:Math.random()*2.5+1,a:1}));
-  let f=0;
-  function star(x,y,r){cx.beginPath();for(let i=0;i<5;i++){cx.lineTo(x+r*Math.cos((i*4*Math.PI/5)-Math.PI/2),y+r*Math.sin((i*4*Math.PI/5)-Math.PI/2));cx.lineTo(x+r/2*Math.cos((i*4*Math.PI/5+2*Math.PI/5)-Math.PI/2),y+r/2*Math.sin((i*4*Math.PI/5+2*Math.PI/5)-Math.PI/2));}cx.closePath();cx.fill();}
-  function draw(){f++;cx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.rv;if(f>100)p.a-=.006;if(p.y>cv.height+20){p.y=-10;p.x=Math.random()*cv.width;}cx.save();cx.globalAlpha=Math.max(0,p.a);cx.fillStyle=p.c;cx.translate(p.x,p.y);cx.rotate(p.r);if(p.sh==='circle'){cx.beginPath();cx.arc(0,0,p.s/2,0,Math.PI*2);cx.fill();}else if(p.sh==='rect'){cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);}else{star(0,0,p.s/2);}cx.restore();});if(f<300)requestAnimationFrame(draw);else cx.clearRect(0,0,cv.width,cv.height);}
-  setTimeout(draw,300);
+/* ─────────────────────────────────────────
+   CONFETTI
+───────────────────────────────────────── */
+(function () {
+  const cv = document.getElementById('confetti-canvas');
+  const cx = cv.getContext('2d');
+  cv.width = innerWidth; cv.height = innerHeight;
+  const colors = ['#FFB3C6','#B8E4F9','#FFE066','#B5EAD7','#D4B8F9','#FFCBA4'];
+  const shapes = ['circle','rect','star'];
+  const ps = Array.from({ length: 140 }, () => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height - cv.height,
+    s: Math.random() * 9 + 4,
+    sh: shapes[Math.floor(Math.random() * 3)],
+    c: colors[Math.floor(Math.random() * colors.length)],
+    r: Math.random() * Math.PI * 2,
+    rv: (Math.random() - .5) * .1,
+    vx: (Math.random() - .5) * 1.4,
+    vy: Math.random() * 2.2 + .8,
+    a: 1
+  }));
+  let f = 0;
+  function star(x, y, r) {
+    cx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      cx.lineTo(x + r * Math.cos((i*4*Math.PI/5) - Math.PI/2), y + r * Math.sin((i*4*Math.PI/5) - Math.PI/2));
+      cx.lineTo(x + r/2 * Math.cos((i*4*Math.PI/5 + 2*Math.PI/5) - Math.PI/2), y + r/2 * Math.sin((i*4*Math.PI/5 + 2*Math.PI/5) - Math.PI/2));
+    }
+    cx.closePath(); cx.fill();
+  }
+  function draw() {
+    f++; cx.clearRect(0, 0, cv.width, cv.height);
+    ps.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.r += p.rv;
+      if (f > 90) p.a -= .007;
+      if (p.y > cv.height + 10) { p.y = -10; p.x = Math.random() * cv.width; }
+      cx.save(); cx.globalAlpha = Math.max(0, p.a); cx.fillStyle = p.c;
+      cx.translate(p.x, p.y); cx.rotate(p.r);
+      if (p.sh === 'circle') { cx.beginPath(); cx.arc(0, 0, p.s/2, 0, Math.PI*2); cx.fill(); }
+      else if (p.sh === 'rect') { cx.fillRect(-p.s/2, -p.s/4, p.s, p.s/2); }
+      else { star(0, 0, p.s/2); }
+      cx.restore();
+    });
+    if (f < 280) requestAnimationFrame(draw);
+    else cx.clearRect(0, 0, cv.width, cv.height);
+  }
+  setTimeout(draw, 200);
 })();
 
-/* ══ GALLERY — single focus, image auto-advance, video waits for end ══ */
-(function(){
-  const track = document.getElementById('galleryTrack');
-  const fill  = document.getElementById('galleryFill');
-  const cards = Array.from(track.querySelectorAll('.g-card'));
-  const N     = cards.length;
+/* ─────────────────────────────────────────
+   HERO NUMBER ANIMATION
+   Phase 1 (0 → ~2.5s): count 1 → 365, ease-out
+   Phase 2 (pause 0.5s): hold at 365
+   Phase 3 (0.4s): snap back to 1, fade in "tuổi rồi"
+   Phase 4: reveal date badge, fullname, scroll hint
+───────────────────────────────────────── */
+(function () {
+  const numEl   = document.getElementById('heroNumber');
+  const line1   = document.getElementById('heroLine1');
+  const line3   = document.getElementById('heroLine3');
+  const badge   = document.getElementById('heroBadge');
+  const fullname= document.getElementById('heroFullname');
+  const hint    = document.getElementById('scrollHint');
 
-  const IMAGE_DWELL = 4000;  /* ms to show an image before advancing */
+  const COUNT_UP_DURATION = 2600;   /* ms for 1 → 365 */
+  const PAUSE_DURATION    = 500;    /* ms hold at 365  */
+  const COUNT_DOWN_DURATION = 380;  /* ms for 365 → 1  */
+  const TARGET = 365;
 
-  let activeIdx  = 0;
-  let autoTimer  = null;
-  let isDragging = false;
-  let dragMoved  = false;
-  let startX     = 0, startScroll = 0;
-  let isLbOpen   = false;
+  /* ── easing functions ── */
+  /* ease-out cubic: fast start, decelerates */
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+  /* ease-in-out for the return trip */
+  function easeInOut(t) { return t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2; }
 
-  /* ── scroll a card to center in the track ── */
-  function scrollToCard(idx){
-    const card   = cards[idx];
-    const left   = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
-    track.scrollTo({ left, behavior: 'smooth' });
+  /* ── visual helpers: soft blur/scale on number change ── */
+  let lastVal = 1;
+  function setNumber(val) {
+    const rounded = Math.round(val);
+    if (rounded === lastVal) return;
+    lastVal = rounded;
+    numEl.textContent = rounded;
+    /* micro-scale pulse on each change — gives organic feel */
+    numEl.style.transition = 'transform .08s ease-out, filter .08s ease-out';
+    numEl.style.transform  = 'scale(0.97)';
+    numEl.style.filter     = 'blur(1.5px) drop-shadow(0 4px 24px rgba(240,98,146,.25))';
+    requestAnimationFrame(() => {
+      numEl.style.transform = 'scale(1)';
+      numEl.style.filter    = 'blur(0) drop-shadow(0 4px 24px rgba(240,98,146,.25))';
+    });
   }
 
-  /* ── schedule advance for the current card ──
-     Images: fixed dwell timer.
-     Videos: listen for 'ended' (video fires it once when it finishes playback).
-             We use loop=false so 'ended' actually fires.
-  */
-  function scheduleAdvance(idx){
-    clearTimeout(autoTimer);
-    if(isLbOpen) return;
-
-    const card = cards[idx];
-    const vid  = card.querySelector('video');
-
-    if(vid){
-      /* Remove any previous listener to avoid stacking */
-      vid.removeEventListener('ended', vid._onEnded);
-      vid._onEnded = () => {
-        if(activeIdx === idx && !isLbOpen) advance();
-      };
-      vid.addEventListener('ended', vid._onEnded, { once: true });
-      /* Make sure it isn't looping so 'ended' fires */
-      vid.loop = false;
-    } else {
-      /* Image or placeholder — use fixed timer */
-      autoTimer = setTimeout(() => {
-        if(activeIdx === idx && !isLbOpen) advance();
-      }, IMAGE_DWELL);
+  /* ── Phase 1: count up 1 → 365 ── */
+  function phaseCountUp() {
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const t = Math.min(elapsed / COUNT_UP_DURATION, 1);
+      const eased = easeOutCubic(t);
+      setNumber(1 + (TARGET - 1) * eased);
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        /* ensure exact value */
+        numEl.textContent = TARGET;
+        lastVal = TARGET;
+        setTimeout(phaseCountDown, PAUSE_DURATION);
+      }
     }
+    requestAnimationFrame(step);
   }
 
-  function advance(){
-    focusCard((activeIdx + 1) % N);
+  /* ── Phase 2 → 3: hold, then snap back to 1 ── */
+  function phaseCountDown() {
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const t = Math.min(elapsed / COUNT_DOWN_DURATION, 1);
+      const eased = easeInOut(t);
+      setNumber(TARGET - (TARGET - 1) * eased);
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        /* Settle at exactly 1 */
+        numEl.textContent = '1';
+        lastVal = 1;
+        numEl.style.transition = 'transform .3s ease-out, filter .3s ease-out';
+        numEl.style.transform  = 'scale(1.04)';
+        numEl.style.filter     = 'blur(0) drop-shadow(0 6px 32px rgba(240,98,146,.35))';
+        setTimeout(() => { numEl.style.transform = 'scale(1)'; }, 300);
+        phaseReveal();
+      }
+    }
+    requestAnimationFrame(step);
   }
 
-  /* ── apply focus to exactly one card ── */
-  function focusCard(idx, skipScroll){
-    clearTimeout(autoTimer);
+  /* ── Phase 4: reveal surrounding elements ── */
+  function phaseReveal() {
+    /* "tuổi rồi" fades in */
+    line3.classList.add('visible');
+    /* date badge, fullname, scroll hint stagger */
+    setTimeout(() => { badge.classList.add('visible'); }, 200);
+    setTimeout(() => { fullname.classList.add('visible'); }, 350);
+    setTimeout(() => { hint.classList.add('visible'); }, 550);
+  }
 
-    cards.forEach((c, i) => {
-      const active = (i === idx);
-      c.classList.toggle('in-view', active);
+  /* ── kick off: first fade in "Chill tròn" then start count ── */
+  /* Line 1 fades in immediately */
+  line1.style.transition = 'opacity .7s ease';
+  line1.style.opacity = '0';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      line1.style.opacity = '1';
+    });
+  });
 
-      const vid  = c.querySelector('video');
-      const ring = c.querySelector('.g-play-ring');
+  /* Start number animation shortly after */
+  setTimeout(phaseCountUp, 400);
+})();
 
-      if(vid){
-        if(active){
-          vid.currentTime = 0;   /* restart from beginning */
-          vid.loop = false;
-          vid.play().catch(()=>{});
-          if(ring) ring.classList.add('playing');
-        } else {
-          vid.pause();
-          /* Re-add ended listener removal so stale listeners don't fire */
-          if(vid._onEnded) vid.removeEventListener('ended', vid._onEnded);
-          if(ring) ring.classList.remove('playing');
-        }
+/* ─────────────────────────────────────────
+   MASONRY GALLERY
+───────────────────────────────────────── */
+(function () {
+  const items = Array.from(document.querySelectorAll('.m-item'));
+  const N     = items.length;
+
+  /* ── 1. FADE-IN on scroll (IntersectionObserver) ──
+     Each item starts invisible; when it enters the viewport
+     we add .visible which triggers the CSS transition.
+  */
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        /* once visible, stop observing to save resources */
+        fadeObs.unobserve(entry.target);
       }
     });
+  }, { threshold: 0.1 });
 
-    activeIdx = idx;
-    if(!skipScroll) scrollToCard(idx);
-    updateProgress();
-    scheduleAdvance(idx);
-  }
-
-  /* ── progress bar ── */
-  function updateProgress(){
-    const max = track.scrollWidth - track.clientWidth;
-    const pct = max > 0 ? (track.scrollLeft / max) * 100 : 0;
-    fill.style.width = pct + '%';
-  }
-  track.addEventListener('scroll', updateProgress, { passive: true });
-
-  /* ── mouse drag ── */
-  track.addEventListener('mousedown', e => {
-    isDragging = true; dragMoved = false;
-    startX = e.pageX; startScroll = track.scrollLeft;
-    track.style.cursor = 'grabbing';
-    track.style.userSelect = 'none';
-    clearTimeout(autoTimer);
-  });
-  window.addEventListener('mousemove', e => {
-    if(!isDragging) return;
-    const dx = e.pageX - startX;
-    if(Math.abs(dx) > 4) dragMoved = true;
-    track.scrollLeft = startScroll - dx;
-  });
-  window.addEventListener('mouseup', () => {
-    if(!isDragging) return;
-    isDragging = false;
-    track.style.cursor = 'grab';
-    track.style.userSelect = '';
-    if(dragMoved) snapToNearest();
-  });
-
-  /* ── touch swipe ── */
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-    clearTimeout(autoTimer);
-  }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if(Math.abs(dx) > 40){
-      focusCard(dx < 0 ? Math.min(activeIdx+1, N-1) : Math.max(activeIdx-1, 0));
-    } else {
-      snapToNearest();
-    }
-  }, { passive: true });
-
-  /* snap to the card whose center is closest to the track center */
-  function snapToNearest(){
-    const center = track.scrollLeft + track.clientWidth / 2;
-    let best = 0, bestDist = Infinity;
-    cards.forEach((c, i) => {
-      const d = Math.abs((c.offsetLeft + c.offsetWidth / 2) - center);
-      if(d < bestDist){ bestDist = d; best = i; }
+  /* ── 2. VIDEO AUTOPLAY on scroll (separate observer) ──
+     Videos autoplay (muted) when ≥ 40% visible.
+     They pause when they leave the viewport.
+  */
+  const videoObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const vid   = entry.target.querySelector('video');
+      const badge = entry.target.querySelector('.m-video-badge');
+      if (!vid) return;
+      if (entry.isIntersecting) {
+        vid.play().catch(() => {});
+        if (badge) badge.classList.add('playing');
+      } else {
+        vid.pause();
+        if (badge) badge.classList.remove('playing');
+      }
     });
-    focusCard(best);
-  }
+  }, { threshold: 0.4 });
 
-  /* ── card click ── */
-  cards.forEach((c, i) => c.addEventListener('click', () => {
-    if(dragMoved) return;
-    /* clicking a non-active card focuses it; clicking the active one opens lightbox */
-    if(i !== activeIdx){ focusCard(i); }
-    else { openLb(i); }
-  }));
+  items.forEach((item, i) => {
+    /* stagger fade-in delay for a cascade effect */
+    item.style.transitionDelay = (i % 3) * 0.08 + 's';
+    fadeObs.observe(item);
 
-  /* ── lightbox ── */
-  const lb    = document.getElementById('lightbox');
-  const lbI   = document.getElementById('lbInner');
-  const lbCap = document.getElementById('lbCaption');
-  let lbIdx   = 0;
+    if (item.dataset.type === 'video') {
+      videoObs.observe(item);
+    }
+  });
 
-  function openLb(idx){
-    isLbOpen = true;
-    clearTimeout(autoTimer);
+  /* ── 3. LIGHTBOX ── */
+  const lb     = document.getElementById('lightbox');
+  const lbI    = document.getElementById('lbInner');
+  const lbCap  = document.getElementById('lbCaption');
+  let   lbIdx  = 0;
+
+  function openLb(idx) {
     lbIdx = idx;
-    const card  = cards[idx];
-    const title = card.dataset.title || '';
-    const ts    = card.dataset.timestamp || '';
-    lbI.querySelectorAll('img,video').forEach(e => e.remove());
-    if(card.dataset.type === 'video'){
-      const src = card.querySelector('source');
-      if(src && src.getAttribute('src')){
+    const item  = items[idx];
+    const title = item.dataset.title || '';
+    const ts    = item.dataset.timestamp || '';
+    /* clear previous media */
+    lbI.querySelectorAll('img, video').forEach(el => el.remove());
+
+    if (item.dataset.type === 'video') {
+      const src = item.querySelector('source');
+      if (src && src.getAttribute('src')) {
         const v = document.createElement('video');
-        v.src = src.getAttribute('src'); v.controls = true; v.autoplay = true;
-        v.style.cssText = 'border-radius:16px;max-height:88vh';
+        v.src = src.getAttribute('src');
+        v.controls = true; v.autoplay = true;
+        v.style.cssText = 'border-radius:14px; max-height:88vh';
         lbI.insertBefore(v, lbI.firstChild);
       }
     } else {
-      const imgEl = card.querySelector('img');
-      if(imgEl){
+      const imgEl = item.querySelector('img');
+      if (imgEl) {
         const i = document.createElement('img');
-        i.src = imgEl.src; i.alt = title; i.style.borderRadius = '16px';
+        i.src = imgEl.src; i.alt = title;
+        i.style.borderRadius = '14px';
         lbI.insertBefore(i, lbI.firstChild);
       }
     }
+
     lbCap.textContent = ts ? ts + ' · ' + title : title;
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
-  function closeLb(){
-    isLbOpen = false;
+  function closeLb() {
     lb.classList.remove('open');
     document.body.style.overflow = '';
     lbI.querySelectorAll('video').forEach(v => { v.pause(); v.remove(); });
     lbI.querySelectorAll('img').forEach(i => i.remove());
-    /* resume scheduling for current card */
-    scheduleAdvance(activeIdx);
   }
 
-  document.getElementById('lbClose').onclick = closeLb;
-  document.getElementById('lbPrev').onclick   = e => { e.stopPropagation(); openLb((lbIdx-1+N)%N); };
-  document.getElementById('lbNext').onclick   = e => { e.stopPropagation(); openLb((lbIdx+1)%N); };
-  lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
-  document.addEventListener('keydown', e => {
-    if(!lb.classList.contains('open')) return;
-    if(e.key === 'Escape')      closeLb();
-    if(e.key === 'ArrowLeft')   openLb((lbIdx-1+N)%N);
-    if(e.key === 'ArrowRight')  openLb((lbIdx+1)%N);
+  /* clicking an item opens lightbox */
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => openLb(i));
   });
 
-  /* ── init: dynamic side-padding so first/last cards center ── */
-  function setPadding(){
-    const pad = (track.clientWidth - cards[0].offsetWidth) / 2;
-    track.style.paddingLeft  = Math.max(pad, 20) + 'px';
-    track.style.paddingRight = Math.max(pad, 20) + 'px';
-  }
-  setPadding();
-  window.addEventListener('resize', () => { setPadding(); scrollToCard(activeIdx); });
-
-  focusCard(0, true);           /* focus first card without scrolling */
-  setTimeout(updateProgress, 50);
+  document.getElementById('lbClose').onclick = closeLb;
+  document.getElementById('lbPrev').onclick   = e => { e.stopPropagation(); openLb((lbIdx - 1 + N) % N); };
+  document.getElementById('lbNext').onclick   = e => { e.stopPropagation(); openLb((lbIdx + 1) % N); };
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')      closeLb();
+    if (e.key === 'ArrowLeft')   openLb((lbIdx - 1 + N) % N);
+    if (e.key === 'ArrowRight')  openLb((lbIdx + 1) % N);
+  });
 })();
 
-/* ── scroll reveal ── */
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+/* ── scroll reveal for other sections ── */
+const revObs = new IntersectionObserver(
+  es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: .1 }
+);
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
 </script>
 </body>
 </html>
