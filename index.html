@@ -206,6 +206,24 @@ section { padding: 5rem 2rem; }
 }
 .hero-fullname.visible { opacity: 1; }
 
+/* ── HERO ICE CREAM DECORATIONS ── */
+.hero-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;           /* behind all hero text (z-index: 1) */
+  overflow: hidden;
+}
+.ic {
+  position: absolute;
+  opacity: 0.18;
+  animation: icFloat ease-in-out infinite;
+}
+@keyframes icFloat {
+  0%,100% { transform: translateY(0)    rotate(var(--r, 0deg)); }
+  50%      { transform: translateY(-18px) rotate(var(--r, 0deg)); }
+}
+
 /* scroll cue */
 .scroll-hint {
   position: absolute;
@@ -305,7 +323,6 @@ section { padding: 5rem 2rem; }
     outline: 2px solid rgba(240,98,146,.3);
   }
   .m-item:hover .m-media { transform: scale(1.03); }
-  .m-item:hover .m-overlay { opacity: 1; }
 }
 
 /* ── media wrapper ── */
@@ -347,24 +364,61 @@ section { padding: 5rem 2rem; }
 .mp-f { background: linear-gradient(160deg, #FFE0CC, #FF8A65); min-height: 200px; }
 .mp-g { background: linear-gradient(160deg, #D8F0FF, #4FC3F7); min-height: 290px; }
 
-/* hover overlay with title */
+/* hover overlay — ALWAYS visible at bottom with gradient, stronger on hover */
 .m-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(74,56,96,.75) 0%, transparent 55%);
-  opacity: 0;
-  transition: opacity .35s ease;
+  /* permanent soft gradient at bottom for readability */
+  background: linear-gradient(
+    to top,
+    rgba(30, 12, 50, .82) 0%,
+    rgba(30, 12, 50, .38) 32%,
+    transparent 65%
+  );
+  transition: background .35s ease;
   display: flex;
-  align-items: flex-end;
-  padding: 1rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem 1rem .9rem;
   pointer-events: none;
+}
+/* on hover: deepen the scrim slightly */
+@media (hover: hover) {
+  .m-item:hover .m-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(30, 12, 50, .92) 0%,
+      rgba(30, 12, 50, .50) 40%,
+      transparent 70%
+    );
+  }
+}
+.m-overlay-timestamp {
+  font-family: 'Baloo 2', cursive;
+  font-size: .6rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255, 200, 220, .75);
+  margin-bottom: .22rem;
+  line-height: 1;
+  /* subtle upward shift on hover */
+  transform: translateY(0);
+  transition: transform .35s cubic-bezier(.25,.46,.45,.94);
 }
 .m-overlay-title {
   font-family: 'Baloo 2', cursive;
-  font-size: .9rem;
+  font-size: .92rem;
   font-weight: 700;
   color: white;
-  line-height: 1.3;
+  line-height: 1.25;
+  transform: translateY(0);
+  transition: transform .35s cubic-bezier(.25,.46,.45,.94);
+}
+@media (hover: hover) {
+  .m-item:hover .m-overlay-timestamp,
+  .m-item:hover .m-overlay-title {
+    transform: translateY(-4px);
+  }
 }
 
 /* video badge pill */
@@ -394,27 +448,6 @@ section { padding: 5rem 2rem; }
 @keyframes badgePulse {
   0%   { transform: scale(1);   opacity: .8; }
   100% { transform: scale(1.5); opacity: 0;  }
-}
-
-/* meta row (timestamp + title) at the bottom */
-.m-meta {
-  padding: .75rem 1rem .85rem;
-  background: white;
-}
-.m-timestamp {
-  font-family: 'Baloo 2', cursive;
-  font-size: .62rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  margin-bottom: .2rem;
-}
-.m-title {
-  font-family: 'Baloo 2', cursive;
-  font-size: .95rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  line-height: 1.3;
 }
 
 /* ── LIGHTBOX ── */
@@ -523,9 +556,80 @@ footer {
 
   <!-- Scroll cue -->
   <div class="scroll-hint" id="scrollHint">
-    <span>Hãy kéo xuống nhé</span>
+    <span>Xem chi tiết</span>
     <span class="scroll-arrow">🐣</span>
   </div>
+
+  <!-- ── ICE CREAM DECORATIONS ──────────────────────────────
+       Floating SVG ice creams in the background.
+       z-index: 0 (hero text is z-index: 1).
+       pointer-events: none — doesn't block clicks.
+       Each .ic uses --r for resting rotation and unique
+       animation-duration / animation-delay for variety.
+  ─────────────────────────────────────────────────────── -->
+  <div class="hero-decorations" aria-hidden="true">
+
+    <!-- 1 · Soft-serve cone — top-left -->
+    <svg class="ic" style="top:7%;left:5%;width:72px;--r:-12deg;animation-duration:7s;animation-delay:0s"
+         viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 0 Q38 8 30 16 Q22 24 30 32 Q38 40 30 48" stroke="#FFCBA4" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M15 48 L30 88 L45 48 Z" fill="#F9A825" opacity=".75"/>
+      <line x1="21" y1="56" x2="39" y2="56" stroke="#F06292" stroke-width="1.5" opacity=".5"/>
+      <line x1="23" y1="64" x2="37" y2="64" stroke="#F06292" stroke-width="1.5" opacity=".5"/>
+      <line x1="25" y1="72" x2="35" y2="72" stroke="#F06292" stroke-width="1.5" opacity=".5"/>
+    </svg>
+
+    <!-- 2 · Popsicle (pink) — top-right -->
+    <svg class="ic" style="top:6%;right:7%;width:56px;--r:10deg;animation-duration:8.5s;animation-delay:1.2s"
+         viewBox="0 0 44 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="19" y="58" width="6" height="30" rx="3" fill="#FFCBA4"/>
+      <rect x="6" y="10" width="32" height="52" rx="16" fill="#FFB3C6"/>
+      <ellipse cx="22" cy="20" rx="10" ry="5" fill="white" opacity=".3"/>
+      <rect x="6" y="36" width="32" height="6" rx="3" fill="#F06292" opacity=".4"/>
+    </svg>
+
+    <!-- 3 · Single-scoop cone — bottom-left -->
+    <svg class="ic" style="bottom:12%;left:4%;width:64px;--r:8deg;animation-duration:9s;animation-delay:0.6s"
+         viewBox="0 0 56 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="28" cy="26" r="22" fill="#B5EAD7"/>
+      <circle cx="20" cy="18" r="7" fill="white" opacity=".3"/>
+      <path d="M10 46 L28 78 L46 46 Z" fill="#FFD740" opacity=".8"/>
+    </svg>
+
+    <!-- 4 · Popsicle (mint) — bottom-right -->
+    <svg class="ic" style="bottom:10%;right:5%;width:52px;--r:-8deg;animation-duration:7.5s;animation-delay:2s"
+         viewBox="0 0 44 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="19" y="60" width="6" height="28" rx="3" fill="#FFCBA4"/>
+      <rect x="6" y="10" width="32" height="54" rx="16" fill="#B5EAD7"/>
+      <ellipse cx="22" cy="21" rx="9" ry="4.5" fill="white" opacity=".35"/>
+      <rect x="6" y="40" width="32" height="5" rx="2.5" fill="#4FC3F7" opacity=".4"/>
+    </svg>
+
+    <!-- 5 · Soft-serve swirl — top-center-right -->
+    <svg class="ic" style="top:14%;right:22%;width:48px;--r:5deg;animation-duration:10s;animation-delay:0.4s"
+         viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 2 Q34 10 25 20 Q16 30 25 40 Q34 50 25 58" stroke="#D4B8F9" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M12 58 L25 68 L38 58 Z" fill="#FFE066" opacity=".7"/>
+    </svg>
+
+    <!-- 6 · Double-scoop cone — left-middle -->
+    <svg class="ic" style="top:40%;left:3%;width:60px;--r:-6deg;animation-duration:8s;animation-delay:1.8s"
+         viewBox="0 0 56 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="28" cy="38" r="18" fill="#FFB3C6"/>
+      <circle cx="28" cy="20" r="16" fill="#B8E4F9"/>
+      <circle cx="21" cy="14" r="5" fill="white" opacity=".32"/>
+      <path d="M12 54 L28 86 L44 54 Z" fill="#FFCBA4" opacity=".85"/>
+    </svg>
+
+    <!-- 7 · Popsicle (lavender) — left-upper -->
+    <svg class="ic" style="top:28%;left:8%;width:46px;--r:14deg;animation-duration:6.5s;animation-delay:3s"
+         viewBox="0 0 44 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="19" y="60" width="6" height="28" rx="3" fill="#FFCBA4"/>
+      <rect x="6" y="10" width="32" height="54" rx="16" fill="#D4B8F9"/>
+      <ellipse cx="22" cy="21" rx="9" ry="4" fill="white" opacity=".3"/>
+    </svg>
+
+  </div><!-- end .hero-decorations -->
 
 </section>
 
@@ -598,44 +702,53 @@ footer {
   <div class="masonry-grid" id="masonryGrid">
 
     <!-- ── ITEM 1 · IMAGE ── -->
-    <div class="m-item" data-type="video" data-timestamp="07 Tháng 07, 2025" data-title="Lần đầu chào đời 👶">
+    <div class="m-item" data-type="image" data-timestamp="Tháng 07, 2025" data-title="Lần đầu chào đời 👶">
       <div class="m-media">
-        <video muted playsinline preload="none" loop>
-               <source src="0707.mp4" type="video/mp4">
-             </video>
+        <div class="m-placeholder mp-a">
+          <span class="mph-icon">📷</span>
+          <span class="mph-lbl">Thêm ảnh vào đây</span>
+          <span class="mph-file">anh1.jpg</span>
+        </div>
+        <!-- <img src="anh1.jpg" alt="Lần đầu chào đời" loading="lazy"> -->
       </div>
-      <div class="m-video-badge">▶ VIDEO</div>
-      <div class="m-overlay"><p class="m-overlay-title">Chill chào đời 👶</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">07 Tháng 07, 2025</p>
-        <p class="m-title">Chill chào đời 👶</p>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 07, 2025</p>
+        <p class="m-overlay-title">Lần đầu chào đời 👶</p>
       </div>
     </div>
 
     <!-- ── ITEM 2 · VIDEO ── -->
-    <div class="m-item" data-type="image" data-timestamp="18 Tháng 07, 2025" data-title="Nụ cười đầu tiên 😊">
+    <div class="m-item" data-type="video" data-timestamp="Tháng 08, 2025" data-title="Nụ cười đầu tiên 😊">
       <div class="m-media">
-        <img src="1807.JPG" alt="Luôn luôn rạng rỡ" loading="lazy">
+        <div class="m-placeholder mp-b">
+          <span class="mph-icon">🎬</span>
+          <span class="mph-lbl">Thêm video vào đây</span>
+          <span class="mph-file">video1.mp4</span>
+        </div>
+        <!-- <video muted playsinline preload="none" loop>
+               <source src="video1.mp4" type="video/mp4">
+             </video> -->
       </div>
-      <div class="m-overlay"><p class="m-overlay-title">Chill chụp studio 😊</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">18 Tháng 07, 2025</p>
-        <p class="m-title">Chill chụp studio 😊</p>
+      <div class="m-video-badge">▶ VIDEO</div>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 08, 2025</p>
+        <p class="m-overlay-title">Nụ cười đầu tiên 😊</p>
       </div>
     </div>
 
     <!-- ── ITEM 3 · IMAGE ── -->
-    <div class="m-item" data-type="video" data-timestamp="01 Tháng 08, 2025" data-title="Chill cười đùa ☀️">
+    <div class="m-item" data-type="image" data-timestamp="Tháng 09, 2025" data-title="Luôn luôn rạng rỡ ☀️">
       <div class="m-media">
-        <video muted playsinline preload="none" loop>
-               <source src="0108.MOV" type="video/mp4">
-             </video>
+        <div class="m-placeholder mp-c">
+          <span class="mph-icon">📷</span>
+          <span class="mph-lbl">Thêm ảnh vào đây</span>
+          <span class="mph-file">anh2.jpg</span>
+        </div>
+        <!-- <img src="anh2.jpg" alt="Luôn luôn rạng rỡ" loading="lazy"> -->
       </div>
-      <div class="m-video-badge">▶ VIDEO</div>
-      <div class="m-overlay"><p class="m-overlay-title">Chill cười đùa ☀️</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">01 Tháng 08, 2025</p>
-        <p class="m-title">Chill cười đùa ☀️</p>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 09, 2025</p>
+        <p class="m-overlay-title">Luôn luôn rạng rỡ ☀️</p>
       </div>
     </div>
 
@@ -652,10 +765,9 @@ footer {
              </video> -->
       </div>
       <div class="m-video-badge">▶ VIDEO</div>
-      <div class="m-overlay"><p class="m-overlay-title">Tập bò rồi nè 🐣</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">Tháng 11, 2025</p>
-        <p class="m-title">Tập bò rồi nè 🐣</p>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 11, 2025</p>
+        <p class="m-overlay-title">Tập bò rồi nè 🐣</p>
       </div>
     </div>
 
@@ -669,10 +781,9 @@ footer {
         </div>
         <!-- <img src="anh3.jpg" alt="Những bước chân đầu tiên" loading="lazy"> -->
       </div>
-      <div class="m-overlay"><p class="m-overlay-title">Những bước chân đầu tiên 🐾</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">Tháng 02, 2026</p>
-        <p class="m-title">Những bước chân đầu tiên 🐾</p>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 02, 2026</p>
+        <p class="m-overlay-title">Những bước chân đầu tiên 🐾</p>
       </div>
     </div>
 
@@ -689,10 +800,9 @@ footer {
              </video> -->
       </div>
       <div class="m-video-badge">▶ VIDEO</div>
-      <div class="m-overlay"><p class="m-overlay-title">Cười thôi là cười 😂</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">Tháng 04, 2026</p>
-        <p class="m-title">Cười thôi là cười 😂</p>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 04, 2026</p>
+        <p class="m-overlay-title">Cười thôi là cười 😂</p>
       </div>
     </div>
 
@@ -706,10 +816,9 @@ footer {
         </div>
         <!-- <img src="anh4.jpg" alt="Một năm tròn hạnh phúc" loading="lazy"> -->
       </div>
-      <div class="m-overlay"><p class="m-overlay-title">Một năm tròn hạnh phúc 🎀</p></div>
-      <div class="m-meta">
-        <p class="m-timestamp">Tháng 06, 2026</p>
-        <p class="m-title">Một năm tròn hạnh phúc 🎀</p>
+      <div class="m-overlay">
+        <p class="m-overlay-timestamp">Tháng 06, 2026</p>
+        <p class="m-overlay-title">Một năm tròn hạnh phúc 🎀</p>
       </div>
     </div>
 
@@ -733,7 +842,7 @@ footer {
 <!-- ── FOOTER ── -->
 <footer>
   <span class="footer-cake">🎂</span>
-  <p class="footer-text">Sinh nhật Chill 🎀 · 07/07 · Được làm với tình yêu của Bố Khang &amp; Mẹ Ánh 💕</p>
+  <p class="footer-text">Sinh nhật Chill 🎀 · 07/07 · Được làm với tình yêu của Ba &amp; Mẹ 💕</p>
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════
