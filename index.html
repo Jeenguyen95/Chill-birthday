@@ -281,6 +281,52 @@ section { padding: 5rem 2rem; }
 }
 .gallery-section .section-tag { background: var(--pink); color: #4A3860; }
 
+/* ── TOP PROGRESS BAR — represents Day 1 → 365 across the gallery ──
+   Only meaningful on a single-column (mobile) layout, where cards
+   read top-to-bottom in a clear timeline. On 2/3-column layouts the
+   "furthest reached" concept is ambiguous, so it's hidden there. */
+.gallery-progress-wrap {
+  display: none;              /* hidden by default — desktop/tablet */
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  max-width: 1100px;
+  margin: 0 auto 2.5rem;
+  padding: 0 0 .6rem;
+}
+@media (max-width: 520px) {
+  .gallery-progress-wrap { display: block; }   /* 1-column mobile only */
+}
+.gallery-progress-track {
+  position: relative;
+  height: 6px;
+  background: rgba(240,98,146,.12);
+  border-radius: 50px;
+  overflow: hidden;
+}
+.gallery-progress-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0%;                       /* updated by JS on scroll */
+  background: linear-gradient(to right, var(--pink), var(--pink-hot));
+  border-radius: 50px;
+  transition: width .12s linear;
+}
+.gallery-progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: .5rem;
+  font-family: 'Baloo 2', cursive;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+.gallery-progress-current {
+  color: var(--pink-hot);
+  font-weight: 700;
+}
+
 /* masonry container — CSS multi-column approach */
 .masonry-grid {
   column-count: 3;
@@ -301,19 +347,22 @@ section { padding: 5rem 2rem; }
   cursor: pointer;
   background: white;
   box-shadow: 0 2px 12px rgba(74,56,96,.08);
-  /* fade-in on scroll — starts hidden, JS adds .visible */
+  /* fade-in on scroll — starts hidden+blurred, JS adds .visible */
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px) scale(.97);
+  filter: blur(4px);
   transition:
-    opacity .55s cubic-bezier(.25,.46,.45,.94),
-    transform .55s cubic-bezier(.25,.46,.45,.94),
+    opacity .65s cubic-bezier(.25,.46,.45,.94),
+    transform .65s cubic-bezier(.25,.46,.45,.94),
+    filter .65s cubic-bezier(.25,.46,.45,.94),
     box-shadow .3s ease,
     outline .2s ease;
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 .m-item.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 /* hover: scale + deeper shadow (desktop only) */
@@ -371,8 +420,8 @@ section { padding: 5rem 2rem; }
   /* permanent soft gradient at bottom for readability */
   background: linear-gradient(
     to top,
-    rgba(30, 12, 50, .62) 0%,
-    rgba(30, 12, 50, .1) 32%,
+    rgba(30, 12, 50, .82) 0%,
+    rgba(30, 12, 50, .38) 32%,
     transparent 65%
   );
   transition: background .35s ease;
@@ -387,8 +436,8 @@ section { padding: 5rem 2rem; }
   .m-item:hover .m-overlay {
     background: linear-gradient(
       to top,
-      rgba(30, 12, 50, .7) 0%,
-      rgba(30, 12, 50, .20) 40%,
+      rgba(30, 12, 50, .92) 0%,
+      rgba(30, 12, 50, .50) 40%,
       transparent 70%
     );
   }
@@ -418,6 +467,40 @@ section { padding: 5rem 2rem; }
   .m-item:hover .m-overlay-timestamp,
   .m-item:hover .m-overlay-title {
     transform: translateY(-4px);
+  }
+}
+
+/* "Day X" badge — fades in on hover, top-right corner */
+.m-day-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(255,255,255,.92);
+  color: var(--pink-hot);
+  font-family: 'Baloo 2', cursive;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: .28rem .75rem;
+  border-radius: 50px;
+  z-index: 3;
+  box-shadow: 0 3px 10px rgba(74,56,96,.18);
+  opacity: 0;
+  transform: translateY(-6px) scale(.92);
+  transition: opacity .3s cubic-bezier(.25,.46,.45,.94),
+              transform .3s cubic-bezier(.25,.46,.45,.94);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .m-item:hover .m-day-badge {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* on touch devices (no hover), show it permanently but subtly */
+@media (hover: none) {
+  .m-day-badge {
+    opacity: .85;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -642,8 +725,8 @@ footer {
 ═══════════════════════════════════════════════════════ -->
 <section class="info-section" id="details">
   <div style="text-align:center">
-    <span class="section-tag reveal">✨ Tiệc sinh nhật của Chill</span>
-    <h2 class="section-title reveal">Hãy đến tham gia nhé</h2>
+    <span class="section-tag reveal">✨ Tiệc sinh nhật Chill</span>
+    <h2 class="section-title reveal">Bạn hãy đến tham dự nhé</h2>
   </div>
   <div class="info-wrap">
     <div class="details-grid">
@@ -699,171 +782,186 @@ footer {
     <h2 class="section-title reveal">Một Năm Yêu Thương ⭐</h2>
   </div>
 
+  <!-- ── TOP PROGRESS BAR · Day 1 → 365 ──
+       Fills as the user scrolls through the gallery,
+       mapped to the highest "Day X" reached so far. -->
+  <div class="gallery-progress-wrap reveal">
+    <div class="gallery-progress-track">
+      <div class="gallery-progress-fill" id="galleryProgressFill"></div>
+    </div>
+    <div class="gallery-progress-label">
+      <span>Ngày 1</span>
+      <span class="gallery-progress-current" id="galleryProgressCurrent">Ngày 1</span>
+      <span>Ngày 365</span>
+    </div>
+  </div>
+
   <div class="masonry-grid" id="masonryGrid">
 
- <!-- ── ITEM 1 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="07 Tháng 07, 2025" data-title="Ngày Chill chào đời 🐣">
+    
+    <!-- ── ITEM 1 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 07, 2025" data-title="Ngày Chill chào đời" data-day="01">
       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769772/0707_codeyu.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 01</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">07 Tháng 07, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 07, 2025</p>
         <p class="m-overlay-title">Ngày Chill chào đời 🐣</p>
       </div>
     </div>
-     
+
     <!-- ── ITEM 2 · IMAGE ── -->
-    <div class="m-item" data-type="image" data-timestamp="18 Tháng 07, 2025" data-title="Chill 10 ngày tuổi 👶">
+    <div class="m-item" data-type="image" data-timestamp="Tháng 07, 2025" data-title="Chill 10 ngày tuổi 👶" data-day="10">
       <div class="m-media">
         <img src="1807.JPG" alt="Chill 10 ngay" loading="lazy">
       </div>
+      <div class="m-day-badge">Ngày 10</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">18 Tháng 07, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 07, 2025</p>
         <p class="m-overlay-title">Chill 10 ngày tuổi 👶</p>
       </div>
     </div>
 
-   <!-- ── ITEM 3 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="01 Tháng 08, 2025" data-title="Chill tự nắm ti 🕶️">
-      <div class="m-media">
-        <video autoplay muted loop playsinline preload="metadata">
-           <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769773/0108_hzi6ys.mp4">
-         </video>
-      </div>
-      <div class="m-video-badge">▶ VIDEO</div>
-      <div class="m-overlay">
-        <p class="m-overlay-timestamp">01 Tháng 08, 2025</p>
-        <p class="m-overlay-title">Chill tự nắm ti 🕶️</p>
-      </div>
-    </div>
-
-    <!-- ── ITEM 4 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="06 Tháng 08, 2025" data-title="Chill biết đùa 😜">
-      <div class="m-media">
+    <!-- ── ITEM 3 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 8, 2025" data-title="Chill biết đùa 😜" data-day="33">
+       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769774/0608_x5mge4.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 33</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">06 Tháng 08, 2025</p>
-        <p class="m-overlay-title">Chill biết đùa 😜</p>
+        <p class="m-overlay-timestamp">Tháng 8, 2025</p>
+        <p class="m-overlay-title">Chill tự nắm ti 🕶️</p>
       </div>
     </div>
 
+   
 
-   <!-- ── ITEM 5 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="22 Tháng 08, 2025" data-title="Chill nghe bố kể chuyện 😲">
+    <!-- ── ITEM 4 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 8, 2025" data-title="Chill nghe bố kể chuyện 😲" data-day="47">
       <div class="m-media">
          <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769778/2208_m0rovf.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 47</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">22 Tháng 08, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 8, 2025</p>
         <p class="m-overlay-title">Chill nghe bố kể chuyện 😲</p>
       </div>
     </div>
 
-     <!-- ── ITEM 6 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="7 Tháng 09, 2025" data-title="Chill đi tiêm 💉">
+	<!-- ── ITEM 5 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 9, 2025" data-title="Chill đi tiêm 💉" data-day="62">
       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769777/Injection_wiquwz.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 62</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">7 Tháng 09, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 9, 2025</p>
         <p class="m-overlay-title">Chill đi tiêm 💉</p>
       </div>
     </div>
 
-     <!-- ── ITEM 7 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="18 Tháng 09, 2025" data-title="Chill cạo đầu ☀️">
-      <div class="m-media">
+	<!-- ── ITEM 6 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 9, 2025" data-title="Chill cạo đầu ☀️" data-day="73">
+       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769775/1809_d0dhfq.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 73</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">18 Tháng 09, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 9, 2025</p>
         <p class="m-overlay-title">Chill cạo đầu ☀️</p>
       </div>
     </div>
 
-      <!-- ── ITEM 8 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="26 Tháng 10, 2025" data-title="Chill tập ngồi 🧘">
-      <div class="m-media">
+	<!-- ── ITEM 7 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 10, 2025" data-title="Chill tập ngồi 🧘" data-day="111">
+       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781769775/2610_o9pipv.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 111</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">26 Tháng 10, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 10, 2025</p>
         <p class="m-overlay-title">Chill tập ngồi 🧘</p>
       </div>
     </div>
 
-   <!-- ── ITEM 9 · IMAGE ── -->
-    <div class="m-item" data-type="image" data-timestamp="9 Tháng 11, 2025" data-title="Chill lên đồ đi chơi 👗">
+	<!-- ── ITEM 8 · IMAGE ── -->
+    <div class="m-item" data-type="image" data-timestamp="Tháng 11, 2025" data-title="Chill lên đồ đi chơi 👗" data-day="125">
       <div class="m-media">
         <img src="0911.jpg" alt="Chill thang 11" loading="lazy">
       </div>
+      <div class="m-day-badge">Ngày 125</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">9 Tháng 11, 2025</p>
+        <p class="m-overlay-timestamp">Tháng 07, 2025</p>
         <p class="m-overlay-title">Chill lên đồ đi chơi 👗</p>
       </div>
     </div>
 
- <!-- ── ITEM 10 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="17 Tháng 02, 2026" data-title="Bất ngờ buồn ngủ 💤">
-      <div class="m-media">
+	<!-- ── ITEM 11 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 2, 2026" data-title="Bất ngờ buồn ngủ 💤" data-day="225">
+       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781773805/1702_tmg7o6.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 225</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">17 Tháng 02, 2026</p>
+        <p class="m-overlay-timestamp">Tháng 2, 2026</p>
         <p class="m-overlay-title">Bất ngờ buồn ngủ 💤</p>
       </div>
     </div>
-
-     <!-- ── ITEM 11 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="25 Tháng 04, 2026" data-title="Nụ cười giòn tan 🤣">
-      <div class="m-media">
+    
+	<!-- ── ITEM 12 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 4, 2026" data-title="Nụ cười giòn tan 🤣" data-day="292">
+       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781774624/2504_zcsg0m.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 292</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">25 Tháng 04, 2026</p>
+        <p class="m-overlay-timestamp">Tháng 4, 2026</p>
         <p class="m-overlay-title">Nụ cười giòn tan 🤣</p>
       </div>
     </div>
-     
-      <!-- ── ITEM 12 · VIDEO ── -->
-    <div class="m-item" data-type="video" data-timestamp="15 Tháng 06, 2026" data-title="Chill biết đi xe rồi 🐷">
-      <div class="m-media">
+
+	<!-- ── ITEM 12 · VIDEO ── -->
+    <div class="m-item" data-type="video" data-timestamp="Tháng 6, 2026" data-title="Chill biết đi xe rồi 🐷" data-day="343">
+       <div class="m-media">
         <video autoplay muted loop playsinline preload="metadata">
            <source src="https://res.cloudinary.com/dtbyec11g/video/upload/q_auto/f_auto/v1781772327/20260615_200654_1_f7qdn1.mp4">
          </video>
       </div>
+      <div class="m-day-badge">Ngày 343</div>
       <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
-        <p class="m-overlay-timestamp">15 Tháng 06, 2026</p>
+        <p class="m-overlay-timestamp">Tháng 6, 2026</p>
         <p class="m-overlay-title">Chill biết đi xe rồi 🐷</p>
       </div>
     </div>
-     
+
+
+
   </div><!-- end .masonry-grid -->
 </section>
 
@@ -1091,6 +1189,53 @@ footer {
     });
   }, { threshold: 0.4 });
 
+  /* ── 3. TOP PROGRESS BAR · Day 1 → 365 ──
+     Only active on 1-column mobile layout (≤520px), where the bar
+     is visible (see CSS). On wider viewports we skip the work
+     entirely since the bar is hidden and "furthest reached" doesn't
+     map cleanly onto a 2/3-column reading order.
+  */
+  const progressWrap    = document.querySelector('.gallery-progress-wrap');
+  const progressFill    = document.getElementById('galleryProgressFill');
+  const progressCurrent = document.getElementById('galleryProgressCurrent');
+  const TOTAL_DAYS      = 365;
+  const MOBILE_BREAKPOINT = 520;
+  let currentDay         = 1;
+
+  function isMobileLayout() {
+    return window.innerWidth <= MOBILE_BREAKPOINT;
+  }
+
+  function updateGalleryProgress() {
+    if (!isMobileLayout()) return;   /* bar is hidden — don't bother computing */
+
+    const viewportCenter = window.innerHeight / 2;
+    let reachedDay = 1;
+
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      /* card counts as "reached" once its top has crossed the
+         vertical center of the screen while scrolling down */
+      if (rect.top <= viewportCenter) {
+        const day = parseInt(item.dataset.day, 10) || 1;
+        if (day > reachedDay) reachedDay = day;
+      }
+    });
+
+    if (reachedDay !== currentDay) {
+      currentDay = reachedDay;
+      const pct = Math.min(100, (currentDay / TOTAL_DAYS) * 100);
+      progressFill.style.width = pct + '%';
+      progressCurrent.textContent = 'Ngày ' + currentDay;
+    }
+  }
+
+  /* run on scroll (passive for performance) and once on load */
+  window.addEventListener('scroll', updateGalleryProgress, { passive: true });
+  window.addEventListener('resize', updateGalleryProgress);
+  updateGalleryProgress();
+
+  /* ── register observers + stagger fade-in delay ── */
   items.forEach((item, i) => {
     /* stagger fade-in delay for a cascade effect */
     item.style.transitionDelay = (i % 3) * 0.08 + 's';
@@ -1101,7 +1246,7 @@ footer {
     }
   });
 
-  /* ── 3. LIGHTBOX ── */
+  /* ── 4. LIGHTBOX ── */
   const lb     = document.getElementById('lightbox');
   const lbI    = document.getElementById('lbInner');
   const lbCap  = document.getElementById('lbCaption');
