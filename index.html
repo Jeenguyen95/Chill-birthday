@@ -454,6 +454,10 @@ section { padding: 5rem 2rem; }
   transform: translateY(0);
   transition: transform .35s cubic-bezier(.25,.46,.45,.94);
 }
+/* hide the timestamp tag on mobile — title alone is enough there */
+@media (max-width: 520px) {
+  .m-overlay-timestamp { display: none; }
+}
 .m-overlay-title {
   font-family: 'Baloo 2', cursive;
   font-size: .92rem;
@@ -502,35 +506,6 @@ section { padding: 5rem 2rem; }
     opacity: .85;
     transform: translateY(0) scale(1);
   }
-}
-
-/* video badge pill */
-.m-video-badge {
-  position: absolute;
-  top: 10px; left: 10px;
-  background: rgba(240,98,146,.9);
-  color: white;
-  font-family: 'Baloo 2', cursive;
-  font-size: .6rem;
-  letter-spacing: .1em;
-  padding: .2rem .7rem;
-  border-radius: 50px;
-  display: flex; align-items: center; gap: .3rem;
-  z-index: 2;
-  backdrop-filter: blur(4px);
-}
-/* pulse ring when video is playing */
-.m-video-badge.playing::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50px;
-  border: 2px solid rgba(240,98,146,.5);
-  animation: badgePulse 1.8s ease-out infinite;
-}
-@keyframes badgePulse {
-  0%   { transform: scale(1);   opacity: .8; }
-  100% { transform: scale(1.5); opacity: 0;  }
 }
 
 /* ── LIGHTBOX ── */
@@ -725,8 +700,8 @@ footer {
 ═══════════════════════════════════════════════════════ -->
 <section class="info-section" id="details">
   <div style="text-align:center">
-    <span class="section-tag reveal">✨ Tiệc sinh nhật Chill</span>
-    <h2 class="section-title reveal">Bạn hãy đến tham dự nhé</h2>
+    <span class="section-tag reveal">✨ Sinh nhật của Chill</span>
+    <h2 class="section-title reveal">Mời bạn đến tham dự</h2>
   </div>
   <div class="info-wrap">
     <div class="details-grid">
@@ -754,7 +729,7 @@ footer {
       <div class="venue-text">
         <p class="venue-label">Địa Điểm Tổ Chức</p>
         <h3 class="venue-name">Thảo Viên Botanic Garden</h3>
-        <p class="venue-address">Số 2 ngõ 31 Phố Hoàng Cầu, P. Đống Đa, Hà Nội<br>Không gian xanh mát, rộng rãi — lý tưởng cho bé vui chơi và cả nhà cùng tận hưởng buổi tiệc 🎈</p>
+        <p class="venue-address">Số 2 ngõ 31 Phố Hoàng Cầu, P. Đống Đa, Hà Nội</p>
         <a href="https://maps.app.goo.gl/ZS5uCeES1AzpRaqZ8" target="_blank" rel="noopener" class="venue-btn">🗺️ Mở Google Maps</a>
       </div>
     </div>
@@ -798,7 +773,6 @@ footer {
 
   <div class="masonry-grid" id="masonryGrid">
 
-    
     <!-- ── ITEM 1 · VIDEO ── -->
     <div class="m-item" data-type="video" data-timestamp="Tháng 07, 2025" data-title="Ngày Chill chào đời" data-day="01">
       <div class="m-media">
@@ -807,7 +781,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 01</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 07, 2025</p>
         <p class="m-overlay-title">Ngày Chill chào đời 🐣</p>
@@ -834,10 +807,9 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 33</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 8, 2025</p>
-        <p class="m-overlay-title">Chill tự nắm ti 🕶️</p>
+        <p class="m-overlay-title">Chill biết đùa 😜</p>
       </div>
     </div>
 
@@ -851,7 +823,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 47</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 8, 2025</p>
         <p class="m-overlay-title">Chill nghe bố kể chuyện 😲</p>
@@ -866,7 +837,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 62</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 9, 2025</p>
         <p class="m-overlay-title">Chill đi tiêm 💉</p>
@@ -881,7 +851,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 73</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 9, 2025</p>
         <p class="m-overlay-title">Chill cạo đầu ☀️</p>
@@ -896,7 +865,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 111</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 10, 2025</p>
         <p class="m-overlay-title">Chill tập ngồi 🧘</p>
@@ -923,7 +891,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 225</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 2, 2026</p>
         <p class="m-overlay-title">Bất ngờ buồn ngủ 💤</p>
@@ -950,7 +917,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 228</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 2, 2026</p>
         <p class="m-overlay-title">Chill và anh Kiss 🤲</p>
@@ -965,7 +931,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 243</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 3, 2026</p>
         <p class="m-overlay-title">Chill tập đứng 🧍‍♀️</p>
@@ -980,7 +945,6 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 292</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 4, 2026</p>
         <p class="m-overlay-title">Nụ cười giòn tan 🤣</p>
@@ -995,14 +959,11 @@ footer {
          </video>
       </div>
       <div class="m-day-badge">Ngày 343</div>
-      <div class="m-video-badge">▶ VIDEO</div>
       <div class="m-overlay">
         <p class="m-overlay-timestamp">Tháng 6, 2026</p>
         <p class="m-overlay-title">Chill biết đi xe rồi 🐷</p>
       </div>
     </div>
-
-
 
   </div><!-- end .masonry-grid -->
 </section>
@@ -1218,15 +1179,12 @@ footer {
   */
   const videoObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const vid   = entry.target.querySelector('video');
-      const badge = entry.target.querySelector('.m-video-badge');
+      const vid = entry.target.querySelector('video');
       if (!vid) return;
       if (entry.isIntersecting) {
         vid.play().catch(() => {});
-        if (badge) badge.classList.add('playing');
       } else {
         vid.pause();
-        if (badge) badge.classList.remove('playing');
       }
     });
   }, { threshold: 0.4 });
