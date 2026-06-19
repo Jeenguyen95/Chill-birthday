@@ -454,10 +454,6 @@ section { padding: 5rem 2rem; }
   transform: translateY(0);
   transition: transform .35s cubic-bezier(.25,.46,.45,.94);
 }
-/* hide the timestamp tag on mobile — title alone is enough there */
-@media (max-width: 520px) {
-  .m-overlay-timestamp { display: none; }
-}
 .m-overlay-title {
   font-family: 'Baloo 2', cursive;
   font-size: .92rem;
@@ -500,12 +496,9 @@ section { padding: 5rem 2rem; }
     transform: translateY(0) scale(1);
   }
 }
-/* on touch devices (no hover), show it permanently but subtly */
-@media (hover: none) {
-  .m-day-badge {
-    opacity: .85;
-    transform: translateY(0) scale(1);
-  }
+/* hide the day badge entirely on mobile (1-column layout) */
+@media (max-width: 520px) {
+  .m-day-badge { display: none; }
 }
 
 /* ── LIGHTBOX ── */
@@ -700,8 +693,8 @@ footer {
 ═══════════════════════════════════════════════════════ -->
 <section class="info-section" id="details">
   <div style="text-align:center">
-    <span class="section-tag reveal">✨ Sinh nhật của Chill</span>
-    <h2 class="section-title reveal">Mời bạn đến tham dự</h2>
+    <span class="section-tag reveal">✨ Tiệc sinh nhật Chill</span>
+    <h2 class="section-title reveal">Bạn hãy đến tham dự nhé</h2>
   </div>
   <div class="info-wrap">
     <div class="details-grid">
@@ -964,6 +957,7 @@ footer {
         <p class="m-overlay-title">Chill biết đi xe rồi 🐷</p>
       </div>
     </div>
+
 
   </div><!-- end .masonry-grid -->
 </section>
